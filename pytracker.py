@@ -8,7 +8,7 @@ import uuid
 if len(sys.argv) < 3:
         print """
 Usage
-        %s [directory] [extension] [-d]
+        %s [directory] [extension] [-d]|[-history]|[-history <runid>]
 Example
         %s '/home/' '.php'                             - to only check for new files and
         %s '/home/' '.php' -d                          - to track if file is deleted

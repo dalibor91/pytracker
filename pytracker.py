@@ -5,6 +5,8 @@ import os
 import sys
 import uuid
 
+program = os.path.basename(sys.argv[0])
+
 if len(sys.argv) < 3:
         print """
 Usage
@@ -14,10 +16,9 @@ Example
         %s '/home/' '.php' -d                          - to track if file is deleted
         %s '/home/' '.php' -history                    - to list history dates with uuid
         %s '/home/' '.php' -history '12345-12345-1234' - to see history for that specific uuid
-        """ % (sys.argv[0], sys.argv[0], sys.argv[0], sys.argv[0], sys.argv[0])
+        """ % (program, program, program, program, program)
 
         quit();
-
 
 targetDir = sys.argv[1]
 targetExtension = sys.argv[2]

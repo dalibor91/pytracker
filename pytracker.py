@@ -3,14 +3,17 @@ import sqlite3
 import hashlib
 import os
 import sys
+import uuid
 
 if len(sys.argv) < 3:
         print """
 Usage
         %s [directory] [extension] [-d]
 Example
-        %s '/home/' '.php'       - to only check for new files and
-        %s '/home/' '.php' -d    - to track if file is deleted
+        %s '/home/' '.php'                             - to only check for new files and
+        %s '/home/' '.php' -d                          - to track if file is deleted
+        %s '/home/' '.php' -history                    - to list history dates with uuid
+        %s '/home/' '.php' -history '12345-12345-1234' - to see history for that specific uuid
         """ % (sys.argv[0], sys.argv[0], sys.argv[0])
 
         quit();
@@ -18,8 +21,9 @@ Example
 
 targetDir = sys.argv[1]
 targetExtension = sys.argv[2]
-otherArguments = sys.argv[3] if len(sys.argv) > 3 and sys.argv[3].startswith('-')  else ''
+otherArguments = sys.argv[3][1:] if len(sys.argv) > 3 and sys.argv[3].startswith('-')  else ''
 homeDir = os.path.expanduser('~') + '/.pytracker';
+runuuid = str(uuid.uuid1())
 
 if not os.path.isdir(homeDir):
         os.mkdir(homeDir);
@@ -55,12 +59,32 @@ if not os.path.isfile(targetDB):
                 created DATETIME DEFAULT CURRENT_TIMESTAMP
         );
         """);
+        curr.execute("""
+        CREATE TABLE history (
+                runid TEXT NOT NULL,
+                file_id INTEGER NOT NULL,
+                fnew INTEGER DEFAULT 0,
+                fchd INTEGER DEFAULT 0,
+                fdel INTEGER DEFAULT 0,
+                created DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        """);
+        curr.execute("CREATE INDEX runnid_idx ON history (runid); ")
 else:
         conn = sqlite3.connect(targetDB)
 
-
-
 curr = conn.cursor();
+
+
+if otherArguments == 'history':
+        if len(sys.argv) == 4:
+                print "%s | %s | %s" % ( "Files No.".ljust(10), "History ID".ljust(40), "Date".ljust(16) )
+                for i in curr.execute(" SELECT COUNT(*), h.runid, h.created  FROM history h INNER JOIN files f ON f.id = h.file_id GROUP BY h.runid"):
+                        print "%s | %s | %s" % ( str(i[0]).ljust(10), i[1].ljust(40), i[2].ljust(16) )
+        elif len(sys.argv) == 5:
+                for i in curr.execute(" SELECT f.path, h.fnew, h.fchd, h.fdel, h.created FROM history h INNER JOIN files f ON f.id = h.file_id WHERE h.runid = ? ", (sys.argv[4], )):
+                        print "%s %s" % (( 'Modified' if i[2] == 1 else ('New' if i[1] == 1 else 'Deleted' )), i[0])
+        quit();
 
 for root, subdirs, files in os.walk(targetDir):
         for f in files:
@@ -92,28 +116,28 @@ for root, subdirs, files in os.walk(targetDir):
                         """, ( absFile, ) ) #no need for escape because we know the value structure
 
                         result = curr.fetchone()
-                        #if result is not None:
-                        #       print "check hash %s" % result[2]
-                        #print result
+
                         if result is None:
                                 #insert in both tables
                                 print "New      %s" % absFile
                                 curr.execute("INSERT INTO files (path) VALUES ( ? )", ( absFile,  ))
-                                curr.execute("INSERT INTO hashes (file_id, hash) VALUES (? , ?)", (curr.lastrowid, hashed, ))
+                                file_id = curr.lastrowid
+                                curr.execute("INSERT INTO hashes (file_id, hash) VALUES (? , ?)", (file_id, hashed, ))
+                                curr.execute("INSERT INTO history (runid, file_id, fnew) VALUES ( ?, ?, 1)", (runuuid, file_id,))
                         elif result[2] != hashed:
                                 #hash is not same so its different
                                 #insert only in hashed
                                 print "Modified %s " % absFile
                                 curr.execute("INSERT INTO hashes (file_id, hash) VALUES (? , ?)", (result[0], hashed, ))
-                                #if result[3] is not None:
-                                #       os.system(result[3])
+                                curr.execute("INSERT INTO history (runid, file_id, fchd) VALUES ( ?, ?, 1)", (runuuid, result[0],))
 
 
-if otherArguments.find('d') > 0:
+if otherArguments.find('d') >= 0:
         for f in curr.execute("SELECT id, path FROM files WHERE deleted = 0"):
                 if not os.path.isfile(f[1]):
                         print "Deleted  %s" % f[1]
                         curr.execute("UPDATE files SET deleted = 1 WHERE id = %d" % f[0])
+                        curr.execute("INSERT INTO history (runid, file_id, fdel) VALUES ( ?, ?, 1)", (runuuid, f[0],))
 
 conn.commit();
 conn.close();

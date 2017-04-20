@@ -11,10 +11,7 @@ or
 ```
 If you want to track if files are deleted
 
-it will parse all files and enter it in sqllite db 
-next time run same command and 
-for changed files it will print out which files were changed 
-
+When you run program first time it will parse all files and enter all files in sqlite db.
 
 So first time when you run it you will see something like 
 ```
@@ -23,7 +20,7 @@ New   /home/test/test1.php
 New   /home/test/test2.php
 ```
 
-Next time when you run it, if nothing is changed inside this 3 files you will get empty output 
+Next time when you run it, if nothing is changed inside of files you will get empty output 
 else if something is changed you will get 
 
 ```

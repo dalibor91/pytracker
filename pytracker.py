@@ -14,7 +14,7 @@ Example
         %s '/home/' '.php' -d                          - to track if file is deleted
         %s '/home/' '.php' -history                    - to list history dates with uuid
         %s '/home/' '.php' -history '12345-12345-1234' - to see history for that specific uuid
-        """ % (sys.argv[0], sys.argv[0], sys.argv[0])
+        """ % (sys.argv[0], sys.argv[0], sys.argv[0], sys.argv[0], sys.argv[0])
 
         quit();
 

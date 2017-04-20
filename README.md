@@ -1,5 +1,8 @@
 # pytracker
-Program for tracking changes of files in some directory on linux
+Program for tracking changes of files in some directory on linux, for specific file extension. 
+
+Created for tracking uploads directory on some old joomla websites 
+so any suspicious upload will be reported.
 
 Usage 
 ```

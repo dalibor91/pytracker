@@ -3,11 +3,11 @@ Program for tracking changes of files in some directory on linux
 
 Usage 
 ```
-./pytracker '/home/' '.php'
+pytracker '/home/' '.php'
 ```
 or 
 ```
-./pytracker '/home/' '.php' -d
+pytracker '/home/' '.php' -d
 ```
 If you want to track if files are deleted
 
@@ -32,5 +32,12 @@ If file is deleted, you will get (if you addded -d as argument)
 ```
 Deleted /home/test/test2.php
 ```
+*INSTALL*
 
+```
+sudo mkdir /var/lib/pytracker && \
+sudo curl -o /var/lib/pytracker/pytracker https://raw.githubusercontent.com/dalibor91/pytracker/master/pytracker.py && \
+sudo chmod +x /var/lib/pytracker/pytracker && \
+sudo ln -s /var/lib/pytracker/pytracker /usr/bin/pytracker
+```
 

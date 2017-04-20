@@ -77,6 +77,7 @@ for root, subdirs, files in os.walk(targetDir):
                         #print result
                         if result is None:
                                 #insert in both tables
+                                print "New file %s" % absFile
                                 curr.execute("INSERT INTO files (path) VALUES ( ? )", ( absFile,  ))
                                 curr.execute("INSERT INTO hashes (file_id, hash) VALUES (? , ?)", (curr.lastrowid, hashed, ))
                         elif result[2] != hashed:

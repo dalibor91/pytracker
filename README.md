@@ -44,3 +44,19 @@ sudo chmod +x /var/lib/pytracker/pytracker && \
 sudo ln -s /var/lib/pytracker/pytracker /usr/bin/pytracker
 ```
 
+*HISTORY*
+
+You are also able to search history, 
+```
+pytracker '/home/' '.php' -history
+```
+will give you all history records when we had some changes on files 
+and 
+```
+pytracker '/home/' '.php' -history '{some_history_id}'
+```
+will give you what changed for that specific History ID
+
+
+
+

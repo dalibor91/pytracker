@@ -30,7 +30,7 @@ else if something is changed you will get
 Modified /home/test/test1.php
 ```
 
-If file is deleted, you will get (if you addded -d as argument)
+If file is deleted, you will get (if you added -d as argument)
 
 ```
 Deleted /home/test/test2.php

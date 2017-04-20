@@ -69,7 +69,7 @@ for root, subdirs, files in os.walk(targetDir):
                 with open(absFile , 'rb') as absFileReader:
                         hashed = getContentHash(absFileReader.read())
                         #print "%s - %s" % (absFile, hashed)
-                        curr.execute("SELECT f.id, f.path, h.hash, f.on_change FROM files AS f INNER JOIN hashes AS h ON h.file_id = f.id WHERE f.path = ? ", ( absFile, ) ) #no need for escape because we know the value structure
+                        curr.execute("SELECT f.id, f.path, h.hash, f.on_change FROM files AS f INNER JOIN hashes AS h ON h.file_id = f.id WHERE f.path = ? ORDER BY h.created DESC", ( absFile, ) ) #no need for escape because we know the value structure
 
                         result = curr.fetchone()
                         #if result is not None:

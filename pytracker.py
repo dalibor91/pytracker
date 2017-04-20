@@ -40,7 +40,9 @@ targetDB = getContentHash(targetDir+'|'+targetExtension)
 targetDB = "%s/%s.db" % (homeDir, targetDB)
 
 conn = None
+historyAvailible = True
 if not os.path.isfile(targetDB):
+        historyAvailible = False
         conn = sqlite3.connect(targetDB)
         curr = conn.cursor()
         curr.execute("""
@@ -78,6 +80,10 @@ curr = conn.cursor();
 
 
 if otherArguments == 'history':
+        if historyAvailible is False:
+                print "History is not availible for given arguments"
+                quit();
+                
         if len(sys.argv) == 4:
                 print "%s | %s | %s" % ( "Files No.".ljust(10), "History ID".ljust(40), "Date".ljust(16) )
                 for i in curr.execute(" SELECT COUNT(*), h.runid, h.created  FROM history h INNER JOIN files f ON f.id = h.file_id GROUP BY h.runid"):

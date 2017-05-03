@@ -140,11 +140,15 @@ for root, subdirs, files in os.walk(targetDir):
 
 
 if otherArguments.find('d') >= 0:
+        ids = []
         for f in curr.execute("SELECT id, path FROM files WHERE deleted = 0"):
                 if not os.path.isfile(f[1]):
                         print "Deleted  %s" % f[1]
-                        curr.execute("UPDATE files SET deleted = 1 WHERE id = %d" % f[0])
-                        curr.execute("INSERT INTO history (runid, file_id, fdel) VALUES ( ?, ?, 1)", (runuuid, f[0],))
+                        ids.append(f[0])
+
+        for id in ids:
+                curr.execute("UPDATE files SET deleted = 1 WHERE id = %d" % id)
+                curr.execute("INSERT INTO history (runid, file_id, fdel) VALUES ( ?, ?, 1)", (runuuid, id,))
 
 conn.commit();
 conn.close();

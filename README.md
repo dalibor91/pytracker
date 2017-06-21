@@ -57,6 +57,24 @@ pytracker '/home/' '.php' -history '{some_history_id}'
 ```
 will give you what changed for that specific History ID
 
+*IGNORE*
+
+Ignoring specific files is also posible .
+To add new file to ignore list run 
+```
+pytracker '/home/' '.php' -ignore '/home/path_to_file'
+```
+
+To remove file from ignore list run 
+```
+pytracker '/home/' '.php' -unignore '/home/path_to_file'
+```
+
+To see all ignored files run 
+```
+pytracker '/home/' '.php' -ignore-list
+```
+
 
 
 

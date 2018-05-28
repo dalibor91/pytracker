@@ -14,7 +14,7 @@ class File:
         return self.file
 
     def md5_hash(self):
-        with open(absFile , 'rb') as reader:
+        with open(self.file, 'rb') as reader:
             return h.md5_hash(reader.read())
         return None
 
@@ -30,10 +30,11 @@ class Finder:
         with specific extensio
         @todo - optimise
         """
-        files = []
+        found = []
         for root, subdirs, files in os.walk(target):
             for f in files:
-                absFile = os.path.join(root, f)
-                if not absFile.endswith(extension):
-                    continue;
-                files.append(File(absFile))
+                abs_file = os.path.join(root, f)
+                if abs_file.endswith(extension):
+                    found.append(File(abs_file))
+
+        return found

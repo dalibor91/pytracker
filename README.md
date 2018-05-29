@@ -138,3 +138,17 @@ Use option --nooutline to remove header from output and "-" and "|"
 ~ pytrack -ignores /tmp .php -nooutline
 1  /tmp/test-9.php FILE 2018-05-29 07:42:35
 ```
+
+# install
+
+```
+curl https://raw.githubusercontent.com/dalibor91/pytracker/master/install.sh > /tmp/install.sh
+/bin/bash /tmp/install.sh
+rm /tmp/install.sh
+```
+
+to test 
+```
+pytrack -help
+```
+

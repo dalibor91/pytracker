@@ -34,6 +34,11 @@ class Finder:
         for root, subdirs, files in os.walk(target):
             for f in files:
                 abs_file = os.path.join(root, f)
+
+                #ignore sym link
+                if os.path.islink(abs_file):
+                    continue
+                
                 if abs_file.endswith(extension):
                     found.append(File(abs_file))
 

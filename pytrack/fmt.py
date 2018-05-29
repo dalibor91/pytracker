@@ -44,8 +44,8 @@ def print_formated(arr, header=None, padding=0):
         if (key == 0) and (header is not None) and print_outlinte:
             summed = 0
             for r in pading:
-                summed += r+4
-            summed-=len(padding)
+                summed += r+3
+            summed-=1
             print(summed*'-')
             print(str)
             print(summed*'-')

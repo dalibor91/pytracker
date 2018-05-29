@@ -11,6 +11,6 @@ setup(name='pytrack',
       author='Dalibor Menkovic',
       author_email='dalibor.menkovic@gmail.com',
       url='https://github.com/dalibor91/pytracker',
-      packages=['pytracker'],
+      packages=['pytrack'],
       scripts=['bin/pytrack'],
 )

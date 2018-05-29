@@ -3,7 +3,7 @@
 import os
 import sys
 
-from pytracker import process_args, help
+from pytrack import process_args, help
 
 program = os.path.basename(sys.argv[0])
 

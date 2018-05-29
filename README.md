@@ -58,7 +58,7 @@ DELETED - number of files that are deleted from last scan
 RUN_UUID - Unique ID for specific scan, you can use this to find which files changed or added for current scan
 
 For example if we want to see which files are added in current scan, we run
-
+```
 ~ pytrack -hist /tmp .php e6db45ac-6312-11e8-8762-0242ac110003
 ---------------------------------------------------------------------------------------------
 UUID                                 | Path                    | Type | Date                |

@@ -4,3 +4,4 @@ build
 dist
 pytrack.egg-info
 .pyc
+main.py

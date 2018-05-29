@@ -139,6 +139,17 @@ Use option --nooutline to remove header from output and "-" and "|"
 1  /tmp/test-9.php FILE 2018-05-29 07:42:35
 ```
 
+Use option -env_export to print env variables so you can
+Use this in your shell script
+
+```
+~ pytrack -scan /tmp .php -env_export > /tmp/scan
+source /tmp/scan
+rm /tmp/scan
+echo $PYTRACK_UUID
+```
+
+
 # install
 
 ```

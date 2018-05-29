@@ -12,6 +12,7 @@ home_dir  = os.path.expanduser('~') + '/.pytracker'
 run_uuid  = str(uuid.uuid1())
 db_exists = False
 verbose   = False
+os_export = False
 
 if not os.path.isdir(home_dir):
     os.mkdir(home_dir, 700)
@@ -22,19 +23,23 @@ Tracking changes on files
 Usage
     {program} [directory] [extension] <options>
 Options
-    --help  | -help                        Print this message
-    --scan  | -scan  [dir] [ext]           Scan directory for extension
-    --hist  | -hist  [dir] [ext] [?uuid]   Show history for this directory
+    --help  | -help                        Help Message
+    --scan  | -scan  [dir] [ext]           Scan For Extension
+    --hist  | -hist  [dir] [ext] [?uuid]   Show History
     --ignf  | -ignf  [dir] [ext] [file]    Ignore File
-    --ignd  | -ignd  [dir] [ext] [dir]     Ignore Directories
-    --rmign | -rmign [dir] [ext] [id]      Delete Ignore record
+    --ignd  | -ignd  [dir] [ext] [dir]     Ignore Directory
+    --rmign | -rmign [dir] [ext] [id]      Delete Ignore
 
     --files     | -files    [dir] [ext]    Show Files
-    --ignores   | -ignores  [dir] [ext]    Print Ignores
+    --ignores   | -ignores  [dir] [ext]    Show Ignores
     --clear     | -clear    [dir] [ext]    Clear Database
 
     --verbose   | -verbose                 Print Messages
     --nooutline | -nooutline               Don't print outline
+    --env_export| -env_export              Print variables
+
+Variables if 'env_export' is enabled:
+    $PYTRACK_NEW $PYTRACK_CHANGED $PYTRACK_UUID $PYTRACK_DELETED
 
 Examples
     {program} -help
@@ -141,6 +146,15 @@ def __scan(d, e, _db):
             __log("DELETED %s" % fl[1])
             db.add_deleted(_db, fl[0], run_uuid)
 
+    #export variables
+    if os_export:
+        for _dk, _dv in data.items():
+            if _dk == 'uuid':
+                print("export %s=\"%s\""%(("PYTRACK_%s"%(_dk.upper())), str(_dv)))
+            else:
+                print("export %s=%s"%(("PYTRACK_%s"%(_dk.upper())), str(_dv)))
+        return None
+
     return fmt.print_formated([ ("NEW", data["new"]), ("CHANGED", data["changed"]), ("DELETED", data["deleted"]), ("RUN_UUID", data["uuid"]) ])
 
 
@@ -151,6 +165,7 @@ def __show_files(_db):
 
 def process_args(program, args):
     global verbose
+    global os_export
 
     args = arg.Arguments(args)
 
@@ -162,6 +177,9 @@ def process_args(program, args):
 
     if args.has("nooutline"):
         fmt.print_outlinte = False
+
+    if args.has("env_export"):
+        os_export = True
 
     if args.has("scan"):
         dir, ext = args.get("scan", 2)

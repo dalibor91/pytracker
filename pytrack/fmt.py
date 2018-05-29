@@ -45,7 +45,7 @@ def print_formated(arr, header=None, padding=0):
             summed = 0
             for r in pading:
                 summed += r+4
-            summed-=1
+            summed-=len(padding)
             print(summed*'-')
             print(str)
             print(summed*'-')
